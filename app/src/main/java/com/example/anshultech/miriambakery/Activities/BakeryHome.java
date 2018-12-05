@@ -54,6 +54,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private static final int RC_SIGN_IN = 123;
+    private String mUserName;
+    private boolean loggedInSuccessFull=false;
+    private boolean loggedOutSuccessfull=false;
 
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
     @Nullable
@@ -86,15 +89,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         mFirebaseAuth = FirebaseAuth.getInstance();
 
 
-        getSupportActionBar().setTitle(getResources().getString(R.string.MiriamRecipieList));
 
-
-/*        if (tabletViewFrameLayout != null) {
-            mTwoPane = true;
-        }*/
-
-        networkCallToLoadData();
-        getIdlingResource();
 
         //Firebase Auth Listener
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -105,7 +100,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                 if (User1 != null) {
                     //user is signedd in
                     Toast.makeText(mContext, "You're Singned in. Welcome to Miriam Bakery", Toast.LENGTH_SHORT).show();
+                    onSignedInInitialize(User1.getDisplayName());
                 } else {
+                    onSignedOutCleanUp();
                     //user signed out
                     /*startActivityForResult(
                             AuthUI.getInstance()
@@ -236,7 +233,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     @Override
     public void onBackPressed() {
 
-        int count = getSupportFragmentManager().getBackStackEntryCount();
+        //int count = getSupportFragmentManager().getBackStackEntryCount();
  /*       if (onBackPressedListener != null) {
 
             if (getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.bakerryRecipieDetailViewFragment)) instanceof BakerryRecipieDetailViewFragment) {
@@ -274,4 +271,19 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         public void forOptionChooseBackPressed(int currentFragmentCount);
     }*/
 
+
+    public void onSignedInInitialize(String userName) {
+        mUserName = userName;
+        loggedInSuccessFull=true;
+        getSupportActionBar().setTitle(getResources().getString(R.string.MiriamRecipieList));
+
+        networkCallToLoadData();
+        getIdlingResource();
+
+    }
+
+    public void onSignedOutCleanUp() {
+//        mUserName=
+        loggedOutSuccessfull=true;
+    }
 }
