@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">MiriamBakery</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer close</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="bakery_master_list">BAKERY_MASTER_LIST</string>
+    <string name="clicked_position">CLICKED_POSITION</string>
+    <string name="ingredient_list">INGREDINET_LIST</string>
+    <string name="steps_list">STEPS_LIST</string>
+    <string name="is_two_pane">IS_TWO_PANE</string>
+    <string name="steps_clicked_position">STEPS_CLICKED_POSITION</string>
+    <string name="video_steps_list">VIDEO_STEPS_LIST</string>
+    <string name="instance_saved_video_position">INSTANCE_SAVED_VIDEO_POSITION</string>
+    <string name="instance_saved_video_list">INSTANCE_SAVED_VIDEO_LIST</string>
+    <string name="instance_saved_two_pane">INSTANCE_SAVED_TWO_PANE</string>
+    <string name="instance_saved_play_when_ready">INSTANCE_SAVED_PLAY_WHEN_READY</string>
+    <string name="instance_saved_position_player">INSTANCE_SAVED_POSITION_PLAYER</string>
+    <string name="list_type">LIST_TYPE</string>
+    <string name="MiriamRecipieList">Miriam Recipe List</string>
+    <string name="bakeryIngredientsStepOptionsChooseFragment">bakeryIngredientsStepOptionsChooseFragment</string>
+    <string name="bakerryRecipieDetailViewFragment">bakerryRecipieDetailViewFragment</string>
+    <string name="instance_bakery_master_list">INSTANCE_BAKERY_MASTER_LIST</string>
+    <string name="instance_clicked_position">INSTANCE_CLICKED_POSITION</string>
+    <string name="instance_list_type">INSTANCE_LIST_TYPE</string>
+    <string name="instance_is_two_pane">INSTANCE_IS_TWO_PANE</string>
+    <string name="RecipieIngredients">Recipe Ingredients</string>
+    <string name="RecipieSteps">Recipie Steps</string>
+    <string name="bakeryRecipeStepsVideoPlayerFragment">bakeryRecipeStepsVideoPlayerFragment</string>
+    <string name="no_data_to_show">No Data to Show</string>
+    <string name="servings">Servings:</string>
+
+</resources>

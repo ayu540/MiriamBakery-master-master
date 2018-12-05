@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.anshultech.miriambakery">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activities.BakeryHome">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Activities.BakeryIngredientsStepOptionsChooseActivity" />
+
+        <activity android:name=".Activities.BakerryRecipieDetailViewActivity" />
+
+        <activity android:name=".Activities.BakeryRecipeStepsVideoPlayerActivity" />
+
+        <receiver android:name=".Widgets.WidgetBakeryRecipieHome">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_bakery_recipie_home_info" />
+        </receiver>
+
+        <service
+            android:name=".Widgets.BakeryDataLoadWidgetService"
+            android:exported="false" />
+
+        <service
+            android:name=".Widgets.GridWidgetSevice"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+    </application>
+
+</manifest>

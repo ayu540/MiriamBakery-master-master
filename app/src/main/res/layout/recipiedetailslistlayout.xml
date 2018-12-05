@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_65dp"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/ingridentsQuantityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_15"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/ingridentsMeasureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/dimen_2dp"
+        android:layout_toRightOf="@id/ingridentsQuantityTextView"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_15"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/recipieDetailsDesciptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/dimen_5dp"
+        android:layout_toLeftOf="@id/favoriteImageRelativeLayout"
+        android:layout_toRightOf="@id/ingridentsMeasureTextView"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_20"
+        tools:text="Remove from oven and cool at room temperature." />
+
+    <RelativeLayout
+        android:id="@+id/favoriteImageRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/dimen_8dp"
+        android:background="@color/colorPrimaryText"
+        android:padding="@dimen/dimen_8dp">
+
+        <ImageView
+            android:id="@+id/favoriteImageViewDetailsList"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ratinggreeen" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/recipieDetailsHorizontalBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorDivider" />
+
+</RelativeLayout>
