@@ -89,4 +89,19 @@ public class BakeryRecipiesListRecyclerViewAdapter extends RecyclerView.Adapter<
     public interface BakeryRecipiesListOnClickListener {
         void onRecipiesClickItem(int position, ArrayList<BakeryRecipiesListBean> bakeryRecipiesListBeans);
     }
+
+    public void clearData() {
+        int size  = mBakeryRecipiesListBeans.size();
+        mBakeryRecipiesListBeans.clear();
+        /*if(size>0) {
+
+            for (int i = 0; i < size; i++) {
+                mBakeryRecipiesListBeans.remove(i);
+
+            }*/
+        notifyItemRangeRemoved(0, size);
+        /*}
+
+    }*/
+    }
 }

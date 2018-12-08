@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -55,8 +58,8 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private static final int RC_SIGN_IN = 123;
     private String mUserName;
-    private boolean loggedInSuccessFull=false;
-    private boolean loggedOutSuccessfull=false;
+    private boolean loggedInSuccessFull = false;
+    private boolean loggedOutSuccessfull = false;
 
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
     @Nullable
@@ -87,8 +90,6 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
         //Firebase Auth intialization
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-
 
 
         //Firebase Auth Listener
@@ -133,15 +134,18 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+            if (resultCode == RESULT_OK) {
+
+                Toast.makeText(mContext, "Signed in", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(mContext, "Signed in Canceled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
     }
 
     private void networkCallToLoadData() {
@@ -271,10 +275,24 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         public void forOptionChooseBackPressed(int currentFragmentCount);
     }*/
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mFirebaseAuth != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
+        mBakeryRecipiesListRecyclerViewAdapter.clearData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
 
     public void onSignedInInitialize(String userName) {
         mUserName = userName;
-        loggedInSuccessFull=true;
+        loggedInSuccessFull = true;
         getSupportActionBar().setTitle(getResources().getString(R.string.MiriamRecipieList));
 
         networkCallToLoadData();
@@ -284,6 +302,31 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
     public void onSignedOutCleanUp() {
 //        mUserName=
-        loggedOutSuccessfull=true;
+        loggedOutSuccessfull = true;
+        mBakeryRecipiesListRecyclerViewAdapter.clearData();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_signed_out_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.signed_out_menu_view: {
+                AuthUI.getInstance().signOut(mContext);
+                return true;
+            }
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
+        }
+
+
     }
 }
+

@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class VolleyConnectionClass {
 
+
     private static VolleyConnectionClass mInstance;
     private RequestQueue mRequestQueue;
     private static Context mContext;

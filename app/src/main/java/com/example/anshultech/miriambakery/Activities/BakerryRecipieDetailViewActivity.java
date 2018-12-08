@@ -36,6 +36,7 @@ import java.util.List;
 
 public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
 
+
     private ArrayList<BakeryRecipiesListBean> mBakeryRecipiesListBeans;
     private ArrayList<BakeryIngridentsListBean> mBakeryIngridentsListBeans;
     private ArrayList<BakeryStepsListBean> mBakeryStepsListBeans;

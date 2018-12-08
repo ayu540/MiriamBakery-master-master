@@ -57,7 +57,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
     private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private boolean doubleBackToExitPressedOnce = false;
-  //  private boolean mTwoPane = false;
+    //  private boolean mTwoPane = false;
     //  private Guideline mHorizontalHalfGuideline;
     private boolean isConfigChngLandscape = false;
     private long positionPlayer;
@@ -81,13 +81,13 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         if (getIntent() != null) {
             mVideosClickedPostion = getIntent().getExtras().getInt(getResources().getString(R.string.steps_clicked_position));
             mBakeryStepsListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.video_steps_list));
-        ////    mTwoPane = getIntent().getExtras().getBoolean(getResources().getString(R.string.is_two_pane));
+            ////    mTwoPane = getIntent().getExtras().getBoolean(getResources().getString(R.string.is_two_pane));
         }
 
         if (savedInstanceState != null) {
             mVideosClickedPostion = savedInstanceState.getInt(getResources().getString(R.string.instance_saved_video_position));
             mBakeryStepsListBeans = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.instance_saved_video_list));
-      //      mTwoPane = savedInstanceState.getBoolean(getResources().getString(R.string.instance_saved_two_pane));
+            //      mTwoPane = savedInstanceState.getBoolean(getResources().getString(R.string.instance_saved_two_pane));
             playWhenReady = savedInstanceState.getBoolean(getResources().getString(R.string.instance_saved_play_when_ready));
         }
 
@@ -163,7 +163,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         super.onSaveInstanceState(outState);
         outState.putInt(getResources().getString(R.string.instance_saved_video_position), mVideosClickedPostion);
         outState.putParcelableArrayList(getResources().getString(R.string.instance_saved_video_list), mBakeryStepsListBeans);
-    //    outState.putBoolean(getResources().getString(R.string.instance_saved_two_pane), mTwoPane);
+        //    outState.putBoolean(getResources().getString(R.string.instance_saved_two_pane), mTwoPane);
         outState.putLong(getResources().getString(R.string.instance_saved_position_player), positionPlayer);
         outState.putBoolean(getResources().getString(R.string.instance_saved_play_when_ready), playWhenReady);
     }
