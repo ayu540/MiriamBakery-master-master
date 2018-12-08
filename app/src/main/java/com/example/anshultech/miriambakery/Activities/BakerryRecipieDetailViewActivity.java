@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -57,9 +58,10 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
     // private FavoriteListViewAdapter favoriteListViewAdapter;
     private FavoriteRecyclerViewAdapter favoriteRecyclerViewAdapter;
     private TextView favoriteDetailsCountTextView;
-    private List<BakeryStepsListBean> favoriteBakeryStepsListBeans;
+    private ArrayList<BakeryStepsListBean> favoriteBakeryStepsListBeans;
     private ImageView plusMinusDetailsButton;
     private RelativeLayout favotiteRelativeLayout;
+    private String mUserName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +113,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
             mBakeryRecipiesListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.bakery_master_list));
             mRecipeMasterListClickedPosition = getIntent().getExtras().getInt(getResources().getString(R.string.ingredient_list));
             RECIPE_LIST_TYPE = getIntent().getExtras().getString(getResources().getString(R.string.list_type));
+            mUserName = mBakeryRecipiesListBeans.get(mRecipeMasterListClickedPosition).getLoggedUserName();
             //     mTwoPane = getIntent().getExtras().getBoolean(getResources().getString(R.string.is_two_pane));
         }
 
@@ -118,6 +121,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
             mBakeryRecipiesListBeans = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.instance_bakery_master_list));
             mRecipeMasterListClickedPosition = savedInstanceState.getInt(getResources().getString(R.string.instance_clicked_position));
             RECIPE_LIST_TYPE = savedInstanceState.getString(getResources().getString(R.string.instance_list_type));
+            mUserName = savedInstanceState.getString(getResources().getString(R.string.LoggedUserName));
             //    mTwoPane = savedInstanceState.getBoolean(getResources().getString(R.string.instance_is_two_pane));
         }
         loadRecipieListItems();
@@ -129,6 +133,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
         outState.putParcelableArrayList(getResources().getString(R.string.instance_bakery_master_list), mBakeryRecipiesListBeans);
         outState.putInt(getResources().getString(R.string.instance_clicked_position), mRecipeMasterListClickedPosition);
         outState.putString(getResources().getString(R.string.instance_list_type), RECIPE_LIST_TYPE);
+        outState.putString(getResources().getString(R.string.LoggedUserName), mUserName);
         //      outState.putBoolean(getResources().getString(R.string.instance_is_two_pane), mTwoPane);
     }
 
@@ -162,15 +167,17 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
                             public void onBakeryDetailsStepsCliCkListenerr(final int position,
                                                                            final ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
 
+
                                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                                 builder.setMessage("Please Choose option");
                                 builder.setCancelable(true);
                                 builder.setPositiveButton("Set Favourite", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        BakeryStepsListBean favoriteBakeryStepsListBean = new BakeryStepsListBean(mBakeryStepsListBeans.get(position).getId(),
-                                                mBakeryStepsListBeans.get(position).getShortDescription(), mBakeryStepsListBeans.get(position).getDescription()
-                                                , mBakeryStepsListBeans.get(position).getVideoURL(), mBakeryStepsListBeans.get(position).getThumbnailURL()
+                                        bakeryStepsListBeans.get(position).setUserName(mUserName);
+                                        BakeryStepsListBean favoriteBakeryStepsListBean = new BakeryStepsListBean(bakeryStepsListBeans.get(position).getId(),
+                                                bakeryStepsListBeans.get(position).getShortDescription(), bakeryStepsListBeans.get(position).getDescription()
+                                                , bakeryStepsListBeans.get(position).getVideoURL(), bakeryStepsListBeans.get(position).getUserName()
                                         );
 
 
@@ -225,7 +232,39 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
                 long count = dataSnapshot.getChildrenCount();
                 favoriteDetailsCountTextView.setText("Favourite Count (" + Long.toString(count) + ")");
 
-                favoriteRecyclerViewAdapter = new FavoriteRecyclerViewAdapter(mContext, favoriteBakeryStepsListBeans);
+                favoriteRecyclerViewAdapter = new FavoriteRecyclerViewAdapter(mContext, favoriteBakeryStepsListBeans
+                        , new FavoriteRecyclerViewAdapter.favoriteClickListener() {
+                    @Override
+                    public void favoriteItemClick(final int position, final ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
+                        AlertDialog.Builder favoriteDialog = new AlertDialog.Builder(mContext);
+                        favoriteDialog.setMessage("Please Choose option");
+                        favoriteDialog.setCancelable(true);
+                        favoriteDialog.setPositiveButton("Delete Favorite",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteFavoriteDBItem();
+                                    }
+                                }
+                        );
+
+                        favoriteDialog.setNegativeButton("View",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt(getResources().getString(R.string.steps_clicked_position), position);
+                                        bundle.putParcelableArrayList(getResources().getString(R.string.video_steps_list), bakeryStepsListBeans);
+                                        Intent intent = new Intent(mContext, BakeryRecipeStepsVideoPlayerActivity.class);
+                                        intent.putExtras(bundle);
+                                        startActivityForResult(intent, BAKERY_STEPS_CLICKED);
+                                    }
+                                }
+                        );
+                    }
+                }
+
+                );
                 favoriteRecyclerViewAdapter.updateFavoriteAdapterList(favoriteBakeryStepsListBeans);
                 favoriteListView.setAdapter(favoriteRecyclerViewAdapter);
             }
@@ -236,6 +275,24 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
             }
         };
         mDatabaseReference.addValueEventListener(mValueEventListener);
+
+    }
+
+    private void deleteFavoriteDBItem() {
+        Query favoriteQuery = mDatabaseReference.child("FavoriteStepsList").orderByChild("id");
+        favoriteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    appleSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

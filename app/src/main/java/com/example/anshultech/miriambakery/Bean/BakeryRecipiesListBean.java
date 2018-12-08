@@ -21,6 +21,7 @@ public class BakeryRecipiesListBean implements Parcelable {
     private int servings;
     @SerializedName("image")
     private String image;
+    private String loggedUserName;
 
     public BakeryRecipiesListBean(){}
 
@@ -31,6 +32,23 @@ public class BakeryRecipiesListBean implements Parcelable {
         bakeryStepsListBeans = in.createTypedArrayList(BakeryStepsListBean.CREATOR);
         servings = in.readInt();
         image = in.readString();
+        loggedUserName = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeTypedList(bakeryIngridentsListBeans);
+        dest.writeTypedList(bakeryStepsListBeans);
+        dest.writeInt(servings);
+        dest.writeString(image);
+        dest.writeString(loggedUserName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<BakeryRecipiesListBean> CREATOR = new Creator<BakeryRecipiesListBean>() {
@@ -93,18 +111,11 @@ public class BakeryRecipiesListBean implements Parcelable {
         this.image = image;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getLoggedUserName() {
+        return loggedUserName;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeTypedList(bakeryIngridentsListBeans);
-        dest.writeTypedList(bakeryStepsListBeans);
-        dest.writeInt(servings);
-        dest.writeString(image);
+    public void setLoggedUserName(String loggedUserName) {
+        this.loggedUserName = loggedUserName;
     }
 }

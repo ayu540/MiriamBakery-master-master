@@ -16,29 +16,22 @@ public class BakeryStepsListBean implements Parcelable {
     @SerializedName("videoURL")
     private String videoURL;
     @SerializedName("thumbnailURL")
-    private String thumbnailURL;
+    private String userName;
 
 //    private boolean isChecked;
 
     public BakeryStepsListBean() {
     }
-
-    public BakeryStepsListBean(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {
-        this.id = id;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.videoURL = videoURL;
-        this.thumbnailURL = thumbnailURL;
-
+    public BakeryStepsListBean(int id, String shortDescription, String description, String videoURL, String userName) {
     }
+
 
     protected BakeryStepsListBean(Parcel in) {
         id = in.readInt();
         shortDescription = in.readString();
         description = in.readString();
         videoURL = in.readString();
-        thumbnailURL = in.readString();
-        //   isChecked = in.readByte() != 0;
+        userName = in.readString();
     }
 
     @Override
@@ -47,8 +40,7 @@ public class BakeryStepsListBean implements Parcelable {
         dest.writeString(shortDescription);
         dest.writeString(description);
         dest.writeString(videoURL);
-        dest.writeString(thumbnailURL);
-        // dest.writeByte((byte) (isChecked ? 1 : 0));
+        dest.writeString(userName);
     }
 
     @Override
@@ -100,18 +92,11 @@ public class BakeryStepsListBean implements Parcelable {
         this.videoURL = videoURL;
     }
 
-    public String getThumbnailURL() {
-        return thumbnailURL;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setThumbnailURL(String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
-
-    /*public boolean isChecked() {
-        return isChecked;
-    }
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }*/
 }

@@ -20,12 +20,14 @@ import java.util.List;
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavouriteViewHolder> {
 
     private Context mContext;
-    private List<BakeryStepsListBean> mBakeryStepsListBeans;
-    ;
+    private ArrayList<BakeryStepsListBean> mBakeryStepsListBeans;
+    private favoriteClickListener mFavoriteClickListener;
+    
 
-    public FavoriteRecyclerViewAdapter(Context context, List<BakeryStepsListBean> bakeryStepsListBeans) {
+    public FavoriteRecyclerViewAdapter(Context context, ArrayList<BakeryStepsListBean> bakeryStepsListBeans, favoriteClickListener favoriteClickListener) {
         this.mContext = context;
         this.mBakeryStepsListBeans = bakeryStepsListBeans;
+        this.mFavoriteClickListener= favoriteClickListener;
 
     }
 
@@ -75,17 +77,20 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
 
         @Override
         public void onClick(View v) {
-
+            mFavoriteClickListener.favoriteItemClick(getAdapterPosition(),mBakeryStepsListBeans);
         }
     }
 
-    public void updateFavoriteAdapterList(List<BakeryStepsListBean> bakeryStepsListBeans){
+    public void updateFavoriteAdapterList(ArrayList<BakeryStepsListBean> bakeryStepsListBeans){
         mBakeryStepsListBeans=bakeryStepsListBeans;
         notifyDataSetChanged();
 
     }
     public void addData(BakeryStepsListBean bakeryStepsListBean){
         this.mBakeryStepsListBeans.add(bakeryStepsListBean);
+    }
+    public interface favoriteClickListener{
+        void favoriteItemClick(int position, ArrayList<BakeryStepsListBean> bakeryStepsListBeans);
     }
 
 }

@@ -15,7 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -60,6 +62,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     private String mUserName;
     private boolean loggedInSuccessFull = false;
     private boolean loggedOutSuccessfull = false;
+    private TextView userNameHomeTextView;
 
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
     @Nullable
@@ -85,6 +88,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         mRecipiListRecyclerView = (RecyclerView) findViewById(R.id.recipiesMasterListRecyclerView);
         mRecipiListRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mBakeryRecipiesArrayListBeans = new ArrayList<BakeryRecipiesListBean>();
+        userNameHomeTextView = (TextView) findViewById(R.id.user_name_home_text_view);
 
         // tabletViewFrameLayout = (FrameLayout) findViewById(R.id.tabletViewFrameLayout);
 
@@ -100,7 +104,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                 FirebaseUser User1 = firebaseAuth.getCurrentUser();
                 if (User1 != null) {
                     //user is signedd in
-                    Toast.makeText(mContext, "You're Singned in. Welcome to Miriam Bakery", Toast.LENGTH_SHORT).show();
+                    //           Toast.makeText(mContext, "You're Singned in. Welcome to Miriam Bakery", Toast.LENGTH_SHORT).show();
                     onSignedInInitialize(User1.getDisplayName());
                 } else {
                     onSignedOutCleanUp();
@@ -163,6 +167,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                                     jsonObject = response.getJSONObject(i);
                                     BakeryRecipiesListBean bakeryRecipiesListBean = gson.fromJson(jsonObject.toString(), BakeryRecipiesListBean.class);
                                     int a = jsonObject.getInt("id");
+                                    bakeryRecipiesListBean.setLoggedUserName(mUserName);
                                     mBakeryRecipiesArrayListBeans.add(bakeryRecipiesListBean);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -171,17 +176,18 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                             }
                             if (mBakeryRecipiesArrayListBeans != null || mBakeryRecipiesArrayListBeans.size() > 0) {
                                 mBakeryRecipiesListRecyclerViewAdapter = new BakeryRecipiesListRecyclerViewAdapter(mContext,
-                                        mBakeryRecipiesArrayListBeans, new BakeryRecipiesListRecyclerViewAdapter.BakeryRecipiesListOnClickListener() {
-                                    @Override
-                                    public void onRecipiesClickItem(int position, ArrayList<BakeryRecipiesListBean> lBakeryRecipiesListBeans) {
+                                        mBakeryRecipiesArrayListBeans,
+                                        new BakeryRecipiesListRecyclerViewAdapter.BakeryRecipiesListOnClickListener() {
+                                            @Override
+                                            public void onRecipiesClickItem(int position, ArrayList<BakeryRecipiesListBean> lBakeryRecipiesListBeans) {
 
 
-                                        //Intent intent = new Intent();
-                                        Bundle bundle = new Bundle();
-                                        bundle.putInt(getResources().getString(R.string.clicked_position), position);
-                                        bundle.putParcelableArrayList(getResources().getString(R.string.bakery_master_list), lBakeryRecipiesListBeans);
-                                        bundle.putParcelableArrayList(getResources().getString(R.string.ingredient_list), lBakeryRecipiesListBeans.get(position).getBakeryIngridentsListBeans());
-                                        bundle.putParcelableArrayList(getResources().getString(R.string.steps_list), lBakeryRecipiesListBeans.get(position).getBakeryStepsListBeans());
+                                                //Intent intent = new Intent();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt(getResources().getString(R.string.clicked_position), position);
+                                                bundle.putParcelableArrayList(getResources().getString(R.string.bakery_master_list), lBakeryRecipiesListBeans);
+                                                bundle.putParcelableArrayList(getResources().getString(R.string.ingredient_list), lBakeryRecipiesListBeans.get(position).getBakeryIngridentsListBeans());
+                                                bundle.putParcelableArrayList(getResources().getString(R.string.steps_list), lBakeryRecipiesListBeans.get(position).getBakeryStepsListBeans());
                                       /*  bundle.putBoolean(getResources().getString(R.string.is_two_pane), mTwoPane);
                                         BakeryIngredientsStepOptionsChooseFragment bakeryIngredientsStepOptionsChooseFragment = new BakeryIngredientsStepOptionsChooseFragment();
                                         bakeryIngredientsStepOptionsChooseFragment.setArguments(bundle);
@@ -203,14 +209,14 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
 
                                         } else {*/
-                                        Intent intent = new Intent(mContext, BakeryIngredientsStepOptionsChooseActivity.class);
-                                        intent.putExtras(bundle);
-                                        startActivityForResult(intent, RECIPIE_MASTER_LIST_LISTENER_CODE);
+                                                Intent intent = new Intent(mContext, BakeryIngredientsStepOptionsChooseActivity.class);
+                                                intent.putExtras(bundle);
+                                                startActivityForResult(intent, RECIPIE_MASTER_LIST_LISTENER_CODE);
 
-                                        /*}*/
-                                    }
+                                                /*}*/
+                                            }
 //                                    }
-                                });
+                                        });
                                 mRecipiListRecyclerView.setAdapter(mBakeryRecipiesListRecyclerViewAdapter);
                                 mIdlingResource.setIdleState(true);
                             }
@@ -291,7 +297,14 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     }
 
     public void onSignedInInitialize(String userName) {
-        mUserName = userName;
+        if (userName != null && !userName.equalsIgnoreCase("")) {
+            mUserName = userName;
+            userNameHomeTextView.setVisibility(View.VISIBLE);
+            userNameHomeTextView.setText("Welcome " + mUserName);
+        } else {
+            mUserName = "";
+            userNameHomeTextView.setVisibility(View.GONE);
+        }
         loggedInSuccessFull = true;
         getSupportActionBar().setTitle(getResources().getString(R.string.MiriamRecipieList));
 

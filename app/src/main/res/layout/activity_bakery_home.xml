@@ -9,6 +9,21 @@
     android:padding="@dimen/dimen_8dp"
     tools:context=".Activities.BakeryHome">
 
+    <TextView
+        android:id="@+id/user_name_home_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_8dp"
+        android:background="@drawable/layout_bg_white"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:padding="@dimen/dimen_5dp"
+        android:singleLine="true"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/text_size_20"
+        android:textStyle="bold"
+        tools:text="Welcome XXX" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

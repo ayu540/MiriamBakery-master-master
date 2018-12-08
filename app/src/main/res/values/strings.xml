@@ -29,5 +29,6 @@
   <string name="bakeryRecipeStepsVideoPlayerFragment">bakeryRecipeStepsVideoPlayerFragment</string>
   <string name="no_data_to_show">No Data to Show</string>
   <string name="servings">Servings:</string>
+  <string name="LoggedUserName">LOGGED_USER_NAME</string>
 
 </resources>
