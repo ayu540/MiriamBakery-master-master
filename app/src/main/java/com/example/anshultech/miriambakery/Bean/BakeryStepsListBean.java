@@ -16,21 +16,31 @@ public class BakeryStepsListBean implements Parcelable {
     @SerializedName("videoURL")
     private String videoURL;
     @SerializedName("thumbnailURL")
+    private String thumbnailURL;
+    @SerializedName("userName")
     private String userName;
 
 //    private boolean isChecked;
 
     public BakeryStepsListBean() {
     }
-    public BakeryStepsListBean(int id, String shortDescription, String description, String videoURL, String userName) {
+    public BakeryStepsListBean(int id, String shortDescription,
+                               String description, String videoURL,
+                               String thumbnailURL, String userName) {
+        this.id=id;
+        this.shortDescription=shortDescription;
+        this.description=description;
+        this.videoURL=videoURL;
+        this.thumbnailURL=thumbnailURL;
+        this.userName=userName;
     }
-
 
     protected BakeryStepsListBean(Parcel in) {
         id = in.readInt();
         shortDescription = in.readString();
         description = in.readString();
         videoURL = in.readString();
+        thumbnailURL = in.readString();
         userName = in.readString();
     }
 
@@ -40,6 +50,7 @@ public class BakeryStepsListBean implements Parcelable {
         dest.writeString(shortDescription);
         dest.writeString(description);
         dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
         dest.writeString(userName);
     }
 
@@ -90,6 +101,14 @@ public class BakeryStepsListBean implements Parcelable {
 
     public void setVideoURL(String videoURL) {
         this.videoURL = videoURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
 
     public String getUserName() {

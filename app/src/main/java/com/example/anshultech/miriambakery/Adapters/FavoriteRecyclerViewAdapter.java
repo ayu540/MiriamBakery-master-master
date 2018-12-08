@@ -24,11 +24,13 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     private favoriteClickListener mFavoriteClickListener;
     
 
-    public FavoriteRecyclerViewAdapter(Context context, ArrayList<BakeryStepsListBean> bakeryStepsListBeans, favoriteClickListener favoriteClickListener) {
+    public FavoriteRecyclerViewAdapter(Context context, ArrayList<BakeryStepsListBean> bakeryStepsListBeans, favoriteClickListener favoriteClickListener ) {
         this.mContext = context;
         this.mBakeryStepsListBeans = bakeryStepsListBeans;
-        this.mFavoriteClickListener= favoriteClickListener;
-
+        this.mFavoriteClickListener= (favoriteClickListener)mContext;
+    }
+    public FavoriteRecyclerViewAdapter(){
+        this.mFavoriteClickListener= (favoriteClickListener)mContext;
     }
 
     @NonNull

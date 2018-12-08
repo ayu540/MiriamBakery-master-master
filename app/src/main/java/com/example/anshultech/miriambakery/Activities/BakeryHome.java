@@ -287,7 +287,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         if (mFirebaseAuth != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        mBakeryRecipiesListRecyclerViewAdapter.clearData();
+        if (mBakeryRecipiesListRecyclerViewAdapter != null&& mBakeryRecipiesListRecyclerViewAdapter.getItemCount()>0) {
+            mBakeryRecipiesListRecyclerViewAdapter.clearData();
+        }
     }
 
     @Override
@@ -316,7 +318,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     public void onSignedOutCleanUp() {
 //        mUserName=
         loggedOutSuccessfull = true;
-        mBakeryRecipiesListRecyclerViewAdapter.clearData();
+        if (mBakeryRecipiesListRecyclerViewAdapter != null&& mBakeryRecipiesListRecyclerViewAdapter.getItemCount()>0) {
+            mBakeryRecipiesListRecyclerViewAdapter.clearData();
+        }
 
     }
 
