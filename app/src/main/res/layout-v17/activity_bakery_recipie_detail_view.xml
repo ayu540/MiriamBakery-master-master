@@ -31,7 +31,7 @@
                     android:id="@+id/favoriteDetailsCountTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
                     android:background="@color/colorPrimary"
                     android:gravity="center"
@@ -42,11 +42,12 @@
                     android:textStyle="bold" />
             </RelativeLayout>
 
+
             <RelativeLayout
                 android:id="@+id/plusMinusButtonRelativeLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@drawable/layout_bg_white"
                 android:padding="@dimen/dimen_8dp">
 
@@ -54,7 +55,7 @@
                     android:id="@+id/plusDetailsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:src="@drawable/ic_add_circle_black" />

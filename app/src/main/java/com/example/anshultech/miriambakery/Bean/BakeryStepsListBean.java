@@ -20,8 +20,6 @@ public class BakeryStepsListBean implements Parcelable {
     @SerializedName("userName")
     private String userName;
 
-//    private boolean isChecked;
-
     public BakeryStepsListBean() {
     }
     public BakeryStepsListBean(int id, String shortDescription,

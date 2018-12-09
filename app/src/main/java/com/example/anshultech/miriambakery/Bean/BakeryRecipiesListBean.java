@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class BakeryRecipiesListBean implements Parcelable {
-
     @SerializedName("id")
     private int id;
     @SerializedName("name")

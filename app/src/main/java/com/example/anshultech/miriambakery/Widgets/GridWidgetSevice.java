@@ -12,6 +12,7 @@ import com.example.anshultech.miriambakery.R;
 import java.util.ArrayList;
 
 import static com.example.anshultech.miriambakery.Widgets.WidgetBakeryRecipieHome.mBakeryRecipiesArrayListBeansHomeWidget;
+import static com.example.anshultech.miriambakery.Widgets.WidgetBakeryRecipieHome.mWidgetHomeIsUserLoggedIn;
 
 
 public class GridWidgetSevice extends RemoteViewsService {
@@ -26,6 +27,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     Context mContext;
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
+    boolean mIsUserLoggedIn;
     boolean mTwoPane=false;
 
 
@@ -44,6 +46,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     public void onDataSetChanged() {
 
         mBakeryRecipiesArrayListBeans=  mBakeryRecipiesArrayListBeansHomeWidget;
+        mIsUserLoggedIn= mWidgetHomeIsUserLoggedIn;
     }
 
     @Override
@@ -59,20 +62,26 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
 
-        if (mBakeryRecipiesArrayListBeans != null && mBakeryRecipiesArrayListBeans.size() > 0) {
-            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_bakery_recipie_home);
-            views.setTextViewText(R.id.appwidget_text, mBakeryRecipiesArrayListBeans.get(position).getName());
+        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_bakery_recipie_home);
+        if(mIsUserLoggedIn==true) {
+            if (mBakeryRecipiesArrayListBeans != null && mBakeryRecipiesArrayListBeans.size() > 0) {
 
-            Bundle bundle = new Bundle();
-            bundle.putInt(mContext.getString(R.string.clicked_position), position);
-            bundle.putParcelableArrayList(mContext.getString(R.string.bakery_master_list), mBakeryRecipiesArrayListBeans);
-            bundle.putParcelableArrayList(mContext.getString(R.string.ingredient_list), mBakeryRecipiesArrayListBeans.get(position).getBakeryIngridentsListBeans());
-            bundle.putParcelableArrayList(mContext.getString(R.string.steps_list), mBakeryRecipiesArrayListBeans.get(position).getBakeryStepsListBeans());
-            bundle.putBoolean(mContext.getString(R.string.is_two_pane), mTwoPane);
-            Intent intent= new Intent();
-            intent.putExtras(bundle);
-            views.setOnClickFillInIntent(R.id.appwidget_RelativeLayout, intent);
-            return views;
+                views.setTextViewText(R.id.appwidget_text, mBakeryRecipiesArrayListBeans.get(position).getName());
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(mContext.getString(R.string.clicked_position), position);
+                bundle.putParcelableArrayList(mContext.getString(R.string.bakery_master_list), mBakeryRecipiesArrayListBeans);
+                bundle.putParcelableArrayList(mContext.getString(R.string.ingredient_list), mBakeryRecipiesArrayListBeans.get(position).getBakeryIngridentsListBeans());
+                bundle.putParcelableArrayList(mContext.getString(R.string.steps_list), mBakeryRecipiesArrayListBeans.get(position).getBakeryStepsListBeans());
+                bundle.putBoolean(mContext.getString(R.string.is_two_pane), mTwoPane);
+                Intent intent = new Intent();
+                intent.putExtras(bundle);
+                views.setOnClickFillInIntent(R.id.appwidget_RelativeLayout, intent);
+                return views;
+            }
+        }
+        else {
+            views.setTextViewText(R.id.appwidget_text, "Please Logged in App First");
         }
         return null;
     }

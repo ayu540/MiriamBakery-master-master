@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,8 +17,6 @@ import com.example.anshultech.miriambakery.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import static android.view.View.LAYOUT_DIRECTION_LTR;
 
 public class BakeryRecipiesListRecyclerViewAdapter extends RecyclerView.Adapter<BakeryRecipiesListRecyclerViewAdapter.BakeryRecipiesListHolder> {
 
@@ -56,6 +53,8 @@ public class BakeryRecipiesListRecyclerViewAdapter extends RecyclerView.Adapter<
         }
         holder.servingValueTextView.setText(Integer.toString(servings));
         holder.masterListRecipeNameTV.setText(recipiName);
+        holder.masterListRecipeNameTV.setContentDescription(recipiName);
+        holder.servingValueTextView.setContentDescription(Integer.toString(servings));
     }
 
     @Override
@@ -69,7 +68,6 @@ public class BakeryRecipiesListRecyclerViewAdapter extends RecyclerView.Adapter<
         TextView servingValueTextView;
         ImageView recipiMasterListImageView;
         RelativeLayout servingRelativeLayout;
-
 
         public BakeryRecipiesListHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,15 +91,6 @@ public class BakeryRecipiesListRecyclerViewAdapter extends RecyclerView.Adapter<
     public void clearData() {
         int size  = mBakeryRecipiesListBeans.size();
         mBakeryRecipiesListBeans.clear();
-        /*if(size>0) {
-
-            for (int i = 0; i < size; i++) {
-                mBakeryRecipiesListBeans.remove(i);
-
-            }*/
         notifyItemRangeRemoved(0, size);
-        /*}
-
-    }*/
     }
 }

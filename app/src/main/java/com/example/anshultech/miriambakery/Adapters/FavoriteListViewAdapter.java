@@ -21,7 +21,6 @@ public class FavoriteListViewAdapter extends ArrayAdapter<BakeryStepsListBean> {
         super(context, resource, bakeryStepsListBeans);
         mBakeryStepsListBeans = bakeryStepsListBeans;
         mContext = context;
-
     }
 
     @Override
@@ -45,9 +44,6 @@ public class FavoriteListViewAdapter extends ArrayAdapter<BakeryStepsListBean> {
         ingridentsMeasureTextView.setVisibility(View.GONE);
         BakeryStepsListBean bakeryStepsListBean = mBakeryStepsListBeans.get(position);
 
-//        if (mBakeryStepsListBeans.size() - 1 == position) {
-//            favouriteViewHolder.recipieDetailsHorizontalBar.setVisibility(View.GONE);
-//        }
         recipieDetailsDesciptionTextView.setText(bakeryStepsListBean.getShortDescription());
 
         return convertView;

@@ -12,14 +12,13 @@
         android:background="@drawable/layout_bg_pink"
         android:padding="@dimen/dimen_8dp">
 
-
         <TextView
             android:id="@+id/appwidget_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_margin="8dp"
+            android:layout_marginTop="@dimen/dimen_8dp"
             android:contentDescription="@string/appwidget_text"
             android:gravity="center_horizontal"
             android:src="@drawable/allcakes_launcher"

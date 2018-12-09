@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class WidgetBakeryRecipieHome extends AppWidgetProvider {
 
     public static ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeansHomeWidget = new ArrayList<BakeryRecipiesListBean>();
+    public static boolean mWidgetHomeIsUserLoggedIn;
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
@@ -31,10 +32,12 @@ public class WidgetBakeryRecipieHome extends AppWidgetProvider {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                ArrayList<BakeryRecipiesListBean> BakeryRecipiesArrayListBeans,
+                                ArrayList<BakeryRecipiesListBean> BakeryRecipiesArrayListBeans
+                                , boolean isUserLoggedIn,
                                 int appWidgetId) {
 
         mBakeryRecipiesArrayListBeansHomeWidget = BakeryRecipiesArrayListBeans;
+        mWidgetHomeIsUserLoggedIn = isUserLoggedIn;
 
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
@@ -79,9 +82,9 @@ public class WidgetBakeryRecipieHome extends AppWidgetProvider {
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public static void updateBakeryRecipieWidgets(Context context, AppWidgetManager appWidgetManager,
-                                                  ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans, int[] appWidgetIds) {
+                                                  ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans,boolean isUserLoggedIn, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, mBakeryRecipiesArrayListBeans, appWidgetId);
+            updateAppWidget(context, appWidgetManager, mBakeryRecipiesArrayListBeans,isUserLoggedIn, appWidgetId);
         }
     }
 

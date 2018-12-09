@@ -1,6 +1,5 @@
 package com.example.anshultech.miriambakery.Adapters;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import com.example.anshultech.miriambakery.Bean.BakeryStepsListBean;
 import com.example.anshultech.miriambakery.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavouriteViewHolder> {
 
@@ -42,7 +40,6 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
 
     @Override
     public void onBindViewHolder(@NonNull FavouriteViewHolder favouriteViewHolder, int position) {
-        String recipeDesciption = new String();
         favouriteViewHolder.ingridentsQuantityTextView.setVisibility(View.GONE);
         favouriteViewHolder.ingridentsMeasureTextView.setVisibility(View.GONE);
 

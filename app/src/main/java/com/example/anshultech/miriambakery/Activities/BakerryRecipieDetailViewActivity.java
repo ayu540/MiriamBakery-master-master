@@ -13,12 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.anshultech.miriambakery.Adapters.BakeryDetailsRecyclerViewAdapter;
-import com.example.anshultech.miriambakery.Adapters.FavoriteListViewAdapter;
 import com.example.anshultech.miriambakery.Adapters.FavoriteRecyclerViewAdapter;
 import com.example.anshultech.miriambakery.Bean.BakeryIngridentsListBean;
 import com.example.anshultech.miriambakery.Bean.BakeryRecipiesListBean;
@@ -28,11 +26,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class BakerryRecipieDetailViewActivity extends AppCompatActivity implements FavoriteRecyclerViewAdapter.favoriteClickListener {
@@ -47,7 +43,6 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
     private RecyclerView mRecipiDetailsViewRecyClerView;
     private String RECIPE_LIST_TYPE;
     private final int BAKERY_STEPS_CLICKED = 13;
-    //   private boolean mTwoPane = false;
 
     //Firebase Implementation
     private FirebaseDatabase mFirebaseDatabase;
@@ -55,7 +50,6 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
     private ValueEventListener mValueEventListener;
     //FavoriteList
     private RecyclerView favoriteListView;
-    // private FavoriteListViewAdapter favoriteListViewAdapter;
     private FavoriteRecyclerViewAdapter favoriteRecyclerViewAdapter;
     private TextView favoriteDetailsCountTextView;
     private ArrayList<BakeryStepsListBean> favoriteBakeryStepsListBeans;
@@ -95,7 +89,6 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
             mRecipeMasterListClickedPosition = getIntent().getExtras().getInt(getResources().getString(R.string.ingredient_list));
             RECIPE_LIST_TYPE = getIntent().getExtras().getString(getResources().getString(R.string.list_type));
             mUserName = mBakeryRecipiesListBeans.get(mRecipeMasterListClickedPosition).getLoggedUserName();
-            //     mTwoPane = getIntent().getExtras().getBoolean(getResources().getString(R.string.is_two_pane));
         }
 
         if (savedInstanceState != null) {
@@ -103,9 +96,8 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
             mRecipeMasterListClickedPosition = savedInstanceState.getInt(getResources().getString(R.string.instance_clicked_position));
             RECIPE_LIST_TYPE = savedInstanceState.getString(getResources().getString(R.string.instance_list_type));
             mUserName = savedInstanceState.getString(getResources().getString(R.string.LoggedUserName));
-            //    mTwoPane = savedInstanceState.getBoolean(getResources().getString(R.string.instance_is_two_pane));
         }
-
+        plusMinusDetailsButton.setContentDescription("Favorite List Opeen or Close button");
         valueFavouriteListListener();
         plusMinusDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,25 +108,15 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
                     plusMinusDetailsButton.setImageResource(R.drawable.ic_remove_circle_black);
                     if (favoriteBakeryStepsListBeans != null && favoriteBakeryStepsListBeans.size() > 0) {
                         favoriteListView.setVisibility(View.VISIBLE);
+                        plusMinusDetailsButton.announceForAccessibility("Favorite List Opens");
                     }
                 } else {
                     favoriteListView.setVisibility(View.GONE);
                     plusMinusDetailsButton.setImageResource(R.drawable.ic_add_circle_black);
+                    plusMinusDetailsButton.announceForAccessibility("Favorite List Close");
                 }
             }
         });
-
-
-        /*if (favoriteBakeryStepsListBeans != null && favoriteBakeryStepsListBeans.size() > 0) {
-            FavoriteRecyclerViewAdapter favoriteRecyclerViewAdapter = new FavoriteRecyclerViewAdapter(new FavoriteRecyclerViewAdapter.favoriteClickListener() {
-                @Override
-                public void favoriteItemClick(int position, ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
-
-                }
-
-            });
-        }*/
-
         loadRecipieListItems();
     }
 
@@ -145,7 +127,6 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
         outState.putInt(getResources().getString(R.string.instance_clicked_position), mRecipeMasterListClickedPosition);
         outState.putString(getResources().getString(R.string.instance_list_type), RECIPE_LIST_TYPE);
         outState.putString(getResources().getString(R.string.LoggedUserName), mUserName);
-        //      outState.putBoolean(getResources().getString(R.string.instance_is_two_pane), mTwoPane);
     }
 
     private void loadRecipieListItems() {
@@ -153,6 +134,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
         if (RECIPE_LIST_TYPE.equalsIgnoreCase("Ingredients")) {
             favotiteRelativeLayout.setVisibility(View.GONE);
             getSupportActionBar().setTitle(getResources().getString(R.string.RecipieIngredients));
+            getSupportActionBar().setHomeActionContentDescription(getResources().getString(R.string.RecipieIngredients));
             mBakeryIngridentsListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.ingredient_list));
             if (mBakeryIngridentsListBeans != null) {
 
@@ -170,6 +152,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
             }
         } else if (RECIPE_LIST_TYPE.equalsIgnoreCase("Steps")) {
             mBakeryStepsListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.steps_list));
+            getSupportActionBar().setHomeActionContentDescription(getResources().getString(R.string.steps_list));
             getSupportActionBar().setTitle(getResources().getString(R.string.RecipieSteps));
             if (mBakeryStepsListBeans != null) {
                 mbBakeryDetailsRecyclerViewAdapter = new BakeryDetailsRecyclerViewAdapter(mContext, mBakeryStepsListBeans,
@@ -243,16 +226,11 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
                 }
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     BakeryStepsListBean bakeryStepsListBean1 = postSnapshot.getValue(BakeryStepsListBean.class);
-                    /*if (operationPerforming.equalsIgnoreCase("DELETE")) {
-                        if (bakeryStepsListBean1.getId() == itemID) {
-                            postSnapshot.getRef().removeValue();
-                        }
-                    } else {*/
                     favoriteBakeryStepsListBeans.add(bakeryStepsListBean1);
-                    /*}*/
                 }
                 long count = dataSnapshot.getChildrenCount();
                 favoriteDetailsCountTextView.setText("Favourite Count (" + Long.toString(count) + ")");
+                favoriteDetailsCountTextView.setContentDescription("Favourite Count (" + Long.toString(count) + ")");
 
                 favoriteRecyclerViewAdapter = new FavoriteRecyclerViewAdapter(mContext, favoriteBakeryStepsListBeans, BakerryRecipieDetailViewActivity.this);
                 favoriteRecyclerViewAdapter.updateFavoriteAdapterList(favoriteBakeryStepsListBeans);
@@ -269,83 +247,12 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
 
     }
 
-    /*private void deleteFavoriteDBItem(int positionID) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query applesQuery = ref.child("FavoriteStepsList").orderByChild("id").equalTo(positionID);
-
-        //Query favoriteQuery = mDatabaseReference.child("FavoriteStepsList").orderByChild("id").equalTo(positionID);
-        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                    appleSnapshot.getRef().removeValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }*/
 
     @Override
     public void favoriteItemClick(final int position, final ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
         AlertDialog.Builder favoriteDialog = new AlertDialog.Builder(mContext);
         favoriteDialog.setMessage("Please Choose option");
         favoriteDialog.setCancelable(true);
-        favoriteDialog.setPositiveButton("Delete Favorite",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //deleteFavoriteDBItem(bakeryStepsListBeans.get(position).getId());
-                        // valueFavouriteListListener("DELETE", bakeryStepsListBeans.get(position).getId());
-                        mDatabaseReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    BakeryStepsListBean bakeryStepsListBean = dataSnapshot.getValue(BakeryStepsListBean.class);
-                                    BakeryStepsListBean bakeryStepsListBean1 = dataSnapshot.getValue(BakeryStepsListBean.class);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                        mValueEventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    BakeryStepsListBean bakeryStepsListBean = dataSnapshot.getValue(BakeryStepsListBean.class);
-                                    if (bakeryStepsListBean.getId() == position) {
-                                        postSnapshot.getRef().removeValue();
-                                        favoriteBakeryStepsListBeans.remove(bakeryStepsListBean);
-                                        long count = dataSnapshot.getChildrenCount();
-                                        favoriteDetailsCountTextView.setText("Favourite Count (" + Long.toString(count) + ")");
-
-                                        favoriteRecyclerViewAdapter = new FavoriteRecyclerViewAdapter(mContext, favoriteBakeryStepsListBeans, BakerryRecipieDetailViewActivity.this);
-                                        favoriteRecyclerViewAdapter.updateFavoriteAdapterList(favoriteBakeryStepsListBeans);
-                                        favoriteListView.setAdapter(favoriteRecyclerViewAdapter);
-                                        mDatabaseReference.removeEventListener(mValueEventListener);
-                                    }
-                                }
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        };
-                        mDatabaseReference.addValueEventListener(mValueEventListener);
-                    }
-                }
-        );
-
         favoriteDialog.setNegativeButton("View",
                 new DialogInterface.OnClickListener() {
                     @Override

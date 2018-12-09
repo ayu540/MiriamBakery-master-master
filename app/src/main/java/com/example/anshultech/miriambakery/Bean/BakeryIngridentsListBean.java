@@ -34,6 +34,7 @@ public class BakeryIngridentsListBean implements Parcelable {
         }
     };
 
+
     public double getQuantity() {
         return quantity;
     }

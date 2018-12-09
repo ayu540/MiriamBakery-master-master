@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.example.anshultech.miriambakery.Bean.BakeryIngridentsListBean;
 import com.example.anshultech.miriambakery.Bean.BakeryStepsListBean;
 import com.example.anshultech.miriambakery.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -72,10 +70,13 @@ public class BakeryDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Baker
             bakeryDetailsHolder.ingridentsMeasureTextView.setVisibility(View.VISIBLE);
             bakeryDetailsHolder.ingridentsQuantityTextView.setText(Double.toString(mBakeryIngridentsListBeans.get(position).getQuantity()));
             bakeryDetailsHolder.ingridentsMeasureTextView.setText(mBakeryIngridentsListBeans.get(position).getMeasure());
+            bakeryDetailsHolder.ingridentsQuantityTextView.setContentDescription(Double.toString(mBakeryIngridentsListBeans.get(position).getQuantity()));
+            bakeryDetailsHolder.ingridentsMeasureTextView.setContentDescription(mBakeryIngridentsListBeans.get(position).getMeasure());
             recipeDesciption = mBakeryIngridentsListBeans.get(position).getIngredient();
         }
 
         bakeryDetailsHolder.recipieDetailsDesciptionTextView.setText(recipeDesciption);
+        bakeryDetailsHolder.recipieDetailsDesciptionTextView.setContentDescription(recipeDesciption);
     }
 
     @Override
@@ -94,10 +95,6 @@ public class BakeryDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Baker
         TextView ingridentsMeasureTextView;
         ImageView favoriteImageViewDetailsList;
         RelativeLayout favoriteImageRelativeLayout;
-        //FireBase Implementation
-        /*FirebaseDatabase mFirebaseDatabase;
-        DatabaseReference mDatabaseReference;
-        ArrayList<DatabaseReference> databaseReferenceArrayList;*/
 
         public BakeryDetailsHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,25 +104,16 @@ public class BakeryDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Baker
             ingridentsMeasureTextView = (TextView) itemView.findViewById(R.id.ingridentsMeasureTextView);
             favoriteImageViewDetailsList = (ImageView) itemView.findViewById(R.id.favoriteImageViewDetailsList);
             favoriteImageRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.favoriteImageRelativeLayout);
-            //Firebase Object initialization
-            /*mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mDatabaseReference = mFirebaseDatabase.getReference().child("FavoriteStepsList");*/
-            //databaseReferenceArrayList=mDatabaseReference.getDatabase().getReference().child();
-
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (mListType.equalsIgnoreCase("Steps")) {
-
-
                 mBakeryDetailsStepsOnClickListener.onBakeryDetailsStepsCliCkListenerr(getAdapterPosition(), mBakeryStepsListBeans);
             } else {
                 mBakeryDetailsIngredientsOnClickListener.onBakeryDetailsIngredientsCliCkListenerr(getAdapterPosition(), mBakeryIngridentsListBeans);
             }
-
-
         }
     }
 

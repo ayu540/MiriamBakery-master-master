@@ -9,11 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.anshultech.miriambakery.Bean.BakeryStepsListBean;
@@ -38,13 +36,12 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity implements Player.EventListener {
 
-    private SimpleExoPlayerView mSimpleExoPlayerView;
+    private static SimpleExoPlayerView mSimpleExoPlayerView;
     private static SimpleExoPlayer mSimpleExoPlayer;
     private Context mContext;
     private String videoUrl;
@@ -53,12 +50,9 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
     private int mVideosClickedPostion;
     private boolean mIsFirstTimeLaunched;
     private TextView mRecipeVideoDescriptionTextView;
-    //   private TextView mRecipieVideoNavigationTextView;
     private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private boolean doubleBackToExitPressedOnce = false;
-    //  private boolean mTwoPane = false;
-    //  private Guideline mHorizontalHalfGuideline;
     private boolean isConfigChngLandscape = false;
     private long positionPlayer;
     private boolean playWhenReady;
@@ -73,41 +67,38 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         mSimpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.recipeStepsVideoPlayerSimpleExoPlayer);
         mRecipeVideoDescriptionTextView = (TextView) findViewById(R.id.recipeVideoDescriptionTextView);
         recipeStepsVideoImageView = (ImageView) findViewById(R.id.recipeStepsVideoImageView);
-        //  mHorizontalHalfGuideline = (Guideline) findViewById(R.id.horizontalHalf);
 
         recipeStepsVideoImageView.setVisibility(View.GONE);
         mBakeryStepsListBeans = new ArrayList<BakeryStepsListBean>();
+        getSupportActionBar().setTitle(getResources().getString(R.string.RecipeStepsPlayer));
+        getSupportActionBar().setHomeActionContentDescription(getResources().getString(R.string.RecipeStepsPlayer));
+        mSimpleExoPlayerView.setContentDescription(getResources().getString(R.string.VideoPlayer));
 
         if (getIntent() != null) {
             mVideosClickedPostion = getIntent().getExtras().getInt(getResources().getString(R.string.steps_clicked_position));
             mBakeryStepsListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.video_steps_list));
-            ////    mTwoPane = getIntent().getExtras().getBoolean(getResources().getString(R.string.is_two_pane));
         }
 
         if (savedInstanceState != null) {
             mVideosClickedPostion = savedInstanceState.getInt(getResources().getString(R.string.instance_saved_video_position));
             mBakeryStepsListBeans = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.instance_saved_video_list));
-            //      mTwoPane = savedInstanceState.getBoolean(getResources().getString(R.string.instance_saved_two_pane));
             playWhenReady = savedInstanceState.getBoolean(getResources().getString(R.string.instance_saved_play_when_ready));
         }
-
 
         if (mBakeryStepsListBeans.get(mVideosClickedPostion).getVideoURL() != null) {
             videoUrl = mBakeryStepsListBeans.get(mVideosClickedPostion).getVideoURL();
             if (mBakeryStepsListBeans.get(mVideosClickedPostion).getVideoURL().equalsIgnoreCase("")) {
-                // mSimpleExoPlayerView.setVisibility(View.GONE);
 
                 if (!mBakeryStepsListBeans.get(mVideosClickedPostion).getThumbnailURL().equalsIgnoreCase("")) {
                     //Load thumbnail if present
                     videoUrl = mBakeryStepsListBeans.get(mVideosClickedPostion).getThumbnailURL();
                     initializeMediaSession();
                     intializePlayer(Uri.parse(videoUrl));
-//                    recipeStepsVideoImageView.setVisibility(View.VISIBLE);
-                    //Picasso.get().load((mBakeryStepsListBeans.get(mVideosClickedPostion).getThumbnailURL())).into(recipeStepsVideoImageView);
                 } else {
                     mSimpleExoPlayerView.setVisibility(View.GONE);
                 }
                 mRecipeVideoDescriptionTextView.setText(mBakeryStepsListBeans.get(mVideosClickedPostion).getDescription());
+                mRecipeVideoDescriptionTextView.setContentDescription(mBakeryStepsListBeans.get(mVideosClickedPostion).getDescription());
 
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -128,6 +119,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
                 intializePlayer(Uri.parse(videoUrl));
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     mRecipeVideoDescriptionTextView.setText(mBakeryStepsListBeans.get(mVideosClickedPostion).getDescription());
+                    mRecipeVideoDescriptionTextView.setContentDescription(mBakeryStepsListBeans.get(mVideosClickedPostion).getDescription());
                 } else {
                     hideUI();
                     mSimpleExoPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -147,6 +139,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
             }
 
             mRecipeVideoDescriptionTextView.setText(mBakeryStepsListBeans.get(mVideosClickedPostion).getDescription());
+            mRecipeVideoDescriptionTextView.setContentDescription(mBakeryStepsListBeans.get(mVideosClickedPostion).getDescription());
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
             } else {
@@ -254,7 +247,6 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
             mSimpleExoPlayer.setPlayWhenReady(playWhenReady);
             mSimpleExoPlayer.seekTo(positionPlayer);
         }
-
     }
 
     @Override
@@ -346,13 +338,14 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         public void onPlay() {
             super.onPlay();
             mSimpleExoPlayer.setPlayWhenReady(true);
-
+            mSimpleExoPlayerView.announceForAccessibility("Video Played");
         }
 
         @Override
         public void onPause() {
             super.onPause();
             mSimpleExoPlayer.setPlayWhenReady(false);
+            mSimpleExoPlayerView.announceForAccessibility("Video Paused");
         }
 
         @Override
@@ -364,6 +357,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         public void onSkipToPrevious() {
             super.onSkipToPrevious();
             mSimpleExoPlayer.seekTo(0);
+            mSimpleExoPlayerView.announceForAccessibility("Video Skip To Previous");
         }
 
         @Override

@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +27,6 @@ import com.example.anshultech.miriambakery.Connection.VolleyConnectionClass;
 import com.example.anshultech.miriambakery.R;
 import com.example.anshultech.miriambakery.Utilities.SimpleIdlingResource;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -41,7 +37,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
+import static com.example.anshultech.miriambakery.Widgets.BakeryDataLoadWidgetService.checkUserLoggedIn;
 
 public class BakeryHome extends AppCompatActivity implements VolleyConnectionClass.NetworkConnectionInferface {
 
@@ -49,19 +46,12 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     private RecyclerView mRecipiListRecyclerView;
     private BakeryRecipiesListRecyclerViewAdapter mBakeryRecipiesListRecyclerViewAdapter;
     private final int RECIPIE_MASTER_LIST_LISTENER_CODE = 11;
-    //   private FrameLayout tabletViewFrameLayout;
-    //  private boolean mTwoPane = false;
-   /* private OnBackPressedListener onBackPressedListener;
-    private OnBackOptionChoosePressedListener onBackOptionChoosePressedListener;*/
-    private boolean doubleBackToExitPressedOnce = false;
 
     //Firebase Authenticaion Implementation
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private static final int RC_SIGN_IN = 123;
     private String mUserName;
-    private boolean loggedInSuccessFull = false;
-    private boolean loggedOutSuccessfull = false;
     private TextView userNameHomeTextView;
 
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
@@ -90,11 +80,8 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         mBakeryRecipiesArrayListBeans = new ArrayList<BakeryRecipiesListBean>();
         userNameHomeTextView = (TextView) findViewById(R.id.user_name_home_text_view);
 
-        // tabletViewFrameLayout = (FrameLayout) findViewById(R.id.tabletViewFrameLayout);
-
         //Firebase Auth intialization
         mFirebaseAuth = FirebaseAuth.getInstance();
-
 
         //Firebase Auth Listener
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -104,24 +91,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                 FirebaseUser User1 = firebaseAuth.getCurrentUser();
                 if (User1 != null) {
                     //user is signedd in
-                    //           Toast.makeText(mContext, "You're Singned in. Welcome to Miriam Bakery", Toast.LENGTH_SHORT).show();
                     onSignedInInitialize(User1.getDisplayName());
                 } else {
                     onSignedOutCleanUp();
-                    //user signed out
-                    /*startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setAvailableProviders(Arrays.asList(
-                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                            new AuthUI.IdpConfig.FacebookBuilder().build(),
-                                            new AuthUI.IdpConfig.TwitterBuilder().build(),
-                                            new AuthUI.IdpConfig.GitHubBuilder().build(),
-                                            new AuthUI.IdpConfig.EmailBuilder().build(),
-                                            new AuthUI.IdpConfig.PhoneBuilder().build(),
-                                            new AuthUI.IdpConfig.AnonymousBuilder().build()))
-                                    .build(),
-                            RC_SIGN_IN);*/
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -140,17 +112,18 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RC_SIGN_IN) {
 
                 Toast.makeText(mContext, "Signed in", Toast.LENGTH_SHORT).show();
+
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(mContext, "Signed in Canceled", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
     }
+
 
     private void networkCallToLoadData() {
 
@@ -181,46 +154,20 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                                             @Override
                                             public void onRecipiesClickItem(int position, ArrayList<BakeryRecipiesListBean> lBakeryRecipiesListBeans) {
 
-
-                                                //Intent intent = new Intent();
                                                 Bundle bundle = new Bundle();
                                                 bundle.putInt(getResources().getString(R.string.clicked_position), position);
                                                 bundle.putParcelableArrayList(getResources().getString(R.string.bakery_master_list), lBakeryRecipiesListBeans);
                                                 bundle.putParcelableArrayList(getResources().getString(R.string.ingredient_list), lBakeryRecipiesListBeans.get(position).getBakeryIngridentsListBeans());
                                                 bundle.putParcelableArrayList(getResources().getString(R.string.steps_list), lBakeryRecipiesListBeans.get(position).getBakeryStepsListBeans());
-                                      /*  bundle.putBoolean(getResources().getString(R.string.is_two_pane), mTwoPane);
-                                        BakeryIngredientsStepOptionsChooseFragment bakeryIngredientsStepOptionsChooseFragment = new BakeryIngredientsStepOptionsChooseFragment();
-                                        bakeryIngredientsStepOptionsChooseFragment.setArguments(bundle);
-                                        //  intent.putExtras(bundle);
-                                        if (mTwoPane == true) {
-
-
-                                            FragmentManager fragmentManager = getSupportFragmentManager();
-                                            FragmentTransaction fragmentTransaction = fragmentManager
-                                                    .beginTransaction();
-                                            if (!bakeryIngredientsStepOptionsChooseFragment.isAdded()) {
-                                                fragmentTransaction
-                                                        .replace(R.id.tabletViewFrameLayout,
-                                                                bakeryIngredientsStepOptionsChooseFragment, getResources().getString(R.string.bakeryIngredientsStepOptionsChooseFragment))
-                                                        .addToBackStack(null).commit();
-                                            } else {
-                                                fragmentTransaction.show(bakeryIngredientsStepOptionsChooseFragment);
-                                            }
-
-
-                                        } else {*/
                                                 Intent intent = new Intent(mContext, BakeryIngredientsStepOptionsChooseActivity.class);
                                                 intent.putExtras(bundle);
                                                 startActivityForResult(intent, RECIPIE_MASTER_LIST_LISTENER_CODE);
 
-                                                /*}*/
                                             }
-//                                    }
                                         });
                                 mRecipiListRecyclerView.setAdapter(mBakeryRecipiesListRecyclerViewAdapter);
                                 mIdlingResource.setIdleState(true);
                             }
-
 
                         } else {
                             Toast.makeText(mContext, "Server Error, please try again", Toast.LENGTH_SHORT).show();
@@ -242,29 +189,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
     @Override
     public void onBackPressed() {
-
-        //int count = getSupportFragmentManager().getBackStackEntryCount();
- /*       if (onBackPressedListener != null) {
-
-            if (getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.bakerryRecipieDetailViewFragment)) instanceof BakerryRecipieDetailViewFragment) {
-                onBackPressedListener.forDetailsPageBackPressed(count);
-            }
-        } else if (onBackOptionChoosePressedListener != null) {
-            if (getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.bakeryIngredientsStepOptionsChooseFragment)) instanceof BakeryIngredientsStepOptionsChooseFragment) {
-                onBackOptionChoosePressedListener.forOptionChooseBackPressed(count);
-            }
-        } else {*/
         super.onBackPressed();
-        /*}*/
     }
 
-/*    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
-        this.onBackPressedListener = onBackPressedListener;
-    }
-
-    public void setOnOptionChooseBackPressedListener(OnBackOptionChoosePressedListener onOptionChooseBackPressedListener) {
-        this.onBackOptionChoosePressedListener = onOptionChooseBackPressedListener;
-    }*/
 
     @Override
     public void isNetworkAvailable() {
@@ -272,22 +199,13 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
     }
 
-/*    public interface OnBackPressedListener {
-        public void forDetailsPageBackPressed(int currentFragmentCount);
-    }
-
-    public interface OnBackOptionChoosePressedListener {
-
-        public void forOptionChooseBackPressed(int currentFragmentCount);
-    }*/
-
     @Override
     protected void onPause() {
         super.onPause();
         if (mFirebaseAuth != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        if (mBakeryRecipiesListRecyclerViewAdapter != null&& mBakeryRecipiesListRecyclerViewAdapter.getItemCount()>0) {
+        if (mBakeryRecipiesListRecyclerViewAdapter != null && mBakeryRecipiesListRecyclerViewAdapter.getItemCount() > 0) {
             mBakeryRecipiesListRecyclerViewAdapter.clearData();
         }
     }
@@ -299,29 +217,27 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     }
 
     public void onSignedInInitialize(String userName) {
+        checkUserLoggedIn(true);
         if (userName != null && !userName.equalsIgnoreCase("")) {
             mUserName = userName;
             userNameHomeTextView.setVisibility(View.VISIBLE);
             userNameHomeTextView.setText("Welcome " + mUserName);
+            userNameHomeTextView.setContentDescription("Welcome " + mUserName);
         } else {
             mUserName = "";
             userNameHomeTextView.setVisibility(View.GONE);
         }
-        loggedInSuccessFull = true;
         getSupportActionBar().setTitle(getResources().getString(R.string.MiriamRecipieList));
-
+        getSupportActionBar().setHomeActionContentDescription(getResources().getString(R.string.MiriamRecipieList));
         networkCallToLoadData();
         getIdlingResource();
-
     }
 
     public void onSignedOutCleanUp() {
-//        mUserName=
-        loggedOutSuccessfull = true;
-        if (mBakeryRecipiesListRecyclerViewAdapter != null&& mBakeryRecipiesListRecyclerViewAdapter.getItemCount()>0) {
+        checkUserLoggedIn(false);
+        if (mBakeryRecipiesListRecyclerViewAdapter != null && mBakeryRecipiesListRecyclerViewAdapter.getItemCount() > 0) {
             mBakeryRecipiesListRecyclerViewAdapter.clearData();
         }
-
     }
 
     @Override
@@ -342,8 +258,6 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                 return super.onOptionsItemSelected(item);
             }
         }
-
-
     }
 }
 
