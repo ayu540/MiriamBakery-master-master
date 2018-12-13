@@ -44,7 +44,7 @@
     <string name="SignedinCanceled"></string>
     <string name="ServerErrorpleasetryagain">Server Error, please try again</string>
     <string name="NetworknotAvailablepleaseccheckyourinternetconnection">Network not Available, please ccheck your internet connection</string>
-    <string name="Welcome">Welcome </string>
+    <string name="Welcome">Welcome :-</string>
     <string name="FavoriteStepsList">FavoriteStepsList</string>
     <string name="FavoriteListOpeenorClosebutton">Favorite List Opeen or Close button</string>
     <string name="FavoriteListOpens">Favorite List Opens</string>
