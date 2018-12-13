@@ -115,10 +115,10 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_SIGN_IN) {
 
-                Toast.makeText(mContext, "Signed in", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getResources().getString(R.string.Signedin), Toast.LENGTH_SHORT).show();
 
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(mContext, "Signed in Canceled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getResources().getString(R.string.SignedinCanceled), Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
@@ -170,7 +170,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                             }
 
                         } else {
-                            Toast.makeText(mContext, "Server Error, please try again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, getResources().getString(R.string.ServerErrorpleasetryagain), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener()
@@ -195,7 +195,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
     @Override
     public void isNetworkAvailable() {
-        Toast.makeText(mContext, "Network not Available, please ccheck your internet connection", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, getResources().getString(R.string.NetworknotAvailablepleaseccheckyourinternetconnection), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -221,8 +221,8 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         if (userName != null && !userName.equalsIgnoreCase("")) {
             mUserName = userName;
             userNameHomeTextView.setVisibility(View.VISIBLE);
-            userNameHomeTextView.setText("Welcome " + mUserName);
-            userNameHomeTextView.setContentDescription("Welcome " + mUserName);
+            userNameHomeTextView.setText(getResources().getString(R.string.Welcome) + mUserName);
+            userNameHomeTextView.setContentDescription(getResources().getString(R.string.Welcome)+ mUserName);
         } else {
             mUserName = "";
             userNameHomeTextView.setVisibility(View.GONE);

@@ -26,6 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class ActivityHomeInstrumentedTest {
     private IdlingResource mIdlingResource;
+    private String Brownies= "Brownies";
 
     @Before
     public void registerIdlingResource() {
@@ -46,8 +47,8 @@ public class ActivityHomeInstrumentedTest {
         }
         onView(ViewMatchers.withId(R.id.recipiesMasterListRecyclerView)).check(matches(isDisplayed()));
         onView(withId(R.id.recipiesMasterListRecyclerView))
-                .check(matches(hasDescendant(withText("Brownies"))));
-        onView(withText("Brownies")).check(matches(isDisplayed()));
+                .check(matches(hasDescendant(withText(Brownies))));
+        onView(withText(Brownies)).check(matches(isDisplayed()));
     }
 
     private BakeryHome startTestActivity(final Instrumentation instrumentation) {

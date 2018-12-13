@@ -33,7 +33,28 @@
     <string name="RecipeStepsPlayer">Recipe Steps Player</string>
     <string name="VideoPlayer">Video Player</string>
     <string name="VideoPlayed">Video Played</string>
+    <string name="VideoPaused">Video Paused</string>
+    <string name="VideoSkipToPrevious">Video Skip To Previous</string>
     <string name="RecipeIngredientsButton">Recipe Ingredients Button</string>
     <string name="RecipeStepsButton">Recipe Steps Button</string>
+    <string name="BakeryRecipiesVideoActivity">BakeryRecipiesVideoActivity</string>
+    <string name="Ingredients">Ingredients</string>
+    <string name="Steps">Steps</string>
+    <string name="Signedin">Signed in</string>
+    <string name="SignedinCanceled"></string>
+    <string name="ServerErrorpleasetryagain">Server Error, please try again</string>
+    <string name="NetworknotAvailablepleaseccheckyourinternetconnection">Network not Available, please ccheck your internet connection</string>
+    <string name="Welcome">Welcome </string>
+    <string name="FavoriteStepsList">FavoriteStepsList</string>
+    <string name="FavoriteListOpeenorClosebutton">Favorite List Opeen or Close button</string>
+    <string name="FavoriteListOpens">Favorite List Opens</string>
+    <string name="FavoriteListClose">Favorite List Close</string>
+    <string name="PleaseChooseoption">Please Choose option</string>
+    <string name="SetFavourite">Set Favourite</string>
+    <string name="View">View</string>
+    <string name="FavouriteCountopenbracket">Favourite Count (</string>
+    <string name="closebracket">)</string>
+    <string name="PleaseLoggedinAppFirst">Please Logged in App First</string>
+
 
 </resources>

@@ -43,7 +43,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
 
     private static SimpleExoPlayerView mSimpleExoPlayerView;
     private static SimpleExoPlayer mSimpleExoPlayer;
-    private Context mContext;
+    private static Context mContext;
     private String videoUrl;
     private String longDescription;
     private ArrayList<BakeryStepsListBean> mBakeryStepsListBeans;
@@ -183,7 +183,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         RenderersFactory renderersFactory = new DefaultRenderersFactory(mContext);
         mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
         mSimpleExoPlayerView.setPlayer(mSimpleExoPlayer);
-        String userAgent = Util.getUserAgent(mContext, "MiriamBakery");
+        String userAgent = Util.getUserAgent(mContext, getResources().getString(R.string.app_name));
         MediaSource mediaSource = new ExtractorMediaSource(videoUri, new DefaultDataSourceFactory(mContext, userAgent),
                 new DefaultExtractorsFactory(), null, null);
         mSimpleExoPlayer.prepare(mediaSource);
@@ -191,7 +191,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
     }
 
     private void initializeMediaSession() {
-        mMediaSession = new MediaSessionCompat(mContext, "BakeryRecipiesVideoActivity");
+        mMediaSession = new MediaSessionCompat(mContext, getResources().getString(R.string.BakeryRecipiesVideoActivity));
 
         // Enable callbacks from MediaButtons and TransportControls.
 
@@ -338,14 +338,14 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         public void onPlay() {
             super.onPlay();
             mSimpleExoPlayer.setPlayWhenReady(true);
-            mSimpleExoPlayerView.announceForAccessibility("Video Played");
+            mSimpleExoPlayerView.announceForAccessibility(mContext.getResources().getString(R.string.VideoPlayed));
         }
 
         @Override
         public void onPause() {
             super.onPause();
             mSimpleExoPlayer.setPlayWhenReady(false);
-            mSimpleExoPlayerView.announceForAccessibility("Video Paused");
+            mSimpleExoPlayerView.announceForAccessibility(mContext.getResources().getString(R.string.VideoPaused));
         }
 
         @Override
@@ -357,7 +357,7 @@ public class BakeryRecipeStepsVideoPlayerActivity extends AppCompatActivity impl
         public void onSkipToPrevious() {
             super.onSkipToPrevious();
             mSimpleExoPlayer.seekTo(0);
-            mSimpleExoPlayerView.announceForAccessibility("Video Skip To Previous");
+            mSimpleExoPlayerView.announceForAccessibility(mContext.getResources().getString(R.string.VideoSkipToPrevious));
         }
 
         @Override

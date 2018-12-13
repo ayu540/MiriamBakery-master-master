@@ -72,7 +72,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
 
         //Firebase initialization
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("FavoriteStepsList");
+        mDatabaseReference = mFirebaseDatabase.getReference().child(getResources().getString(R.string.FavoriteStepsList));
 
         //favoriteList Initialization
         favoriteBakeryStepsListBeans = new ArrayList<>();
@@ -97,7 +97,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
             RECIPE_LIST_TYPE = savedInstanceState.getString(getResources().getString(R.string.instance_list_type));
             mUserName = savedInstanceState.getString(getResources().getString(R.string.LoggedUserName));
         }
-        plusMinusDetailsButton.setContentDescription("Favorite List Opeen or Close button");
+        plusMinusDetailsButton.setContentDescription(getResources().getString(R.string.FavoriteListOpeenorClosebutton));
         valueFavouriteListListener();
         plusMinusDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,12 +108,12 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
                     plusMinusDetailsButton.setImageResource(R.drawable.ic_remove_circle_black);
                     if (favoriteBakeryStepsListBeans != null && favoriteBakeryStepsListBeans.size() > 0) {
                         favoriteListView.setVisibility(View.VISIBLE);
-                        plusMinusDetailsButton.announceForAccessibility("Favorite List Opens");
+                        plusMinusDetailsButton.announceForAccessibility(getResources().getString(R.string.FavoriteListOpens));
                     }
                 } else {
                     favoriteListView.setVisibility(View.GONE);
                     plusMinusDetailsButton.setImageResource(R.drawable.ic_add_circle_black);
-                    plusMinusDetailsButton.announceForAccessibility("Favorite List Close");
+                    plusMinusDetailsButton.announceForAccessibility(getResources().getString(R.string.FavoriteListClose));
                 }
             }
         });
@@ -131,7 +131,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
 
     private void loadRecipieListItems() {
 
-        if (RECIPE_LIST_TYPE.equalsIgnoreCase("Ingredients")) {
+        if (RECIPE_LIST_TYPE.equalsIgnoreCase(getResources().getString(R.string.Ingredients))) {
             favotiteRelativeLayout.setVisibility(View.GONE);
             getSupportActionBar().setTitle(getResources().getString(R.string.RecipieIngredients));
             getSupportActionBar().setHomeActionContentDescription(getResources().getString(R.string.RecipieIngredients));
@@ -150,7 +150,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
 
                 mRecipiDetailsViewRecyClerView.setAdapter(mbBakeryDetailsRecyclerViewAdapter);
             }
-        } else if (RECIPE_LIST_TYPE.equalsIgnoreCase("Steps")) {
+        } else if (RECIPE_LIST_TYPE.equalsIgnoreCase(getResources().getString(R.string.Steps))) {
             mBakeryStepsListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.steps_list));
             getSupportActionBar().setHomeActionContentDescription(getResources().getString(R.string.steps_list));
             getSupportActionBar().setTitle(getResources().getString(R.string.RecipieSteps));
@@ -162,9 +162,9 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
                                                                            final ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                                builder.setMessage("Please Choose option");
+                                builder.setMessage(getResources().getString(R.string.PleaseChooseoption));
                                 builder.setCancelable(true);
-                                builder.setPositiveButton("Set Favourite", new DialogInterface.OnClickListener() {
+                                builder.setPositiveButton(getResources().getString(R.string.SetFavourite), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         bakeryStepsListBeans.get(position).setUserName(mUserName);
@@ -190,7 +190,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
 
                                 });
 
-                                builder.setNegativeButton("View", new DialogInterface.OnClickListener()
+                                builder.setNegativeButton(getResources().getString(R.string.View), new DialogInterface.OnClickListener()
 
                                 {
                                     @Override
@@ -229,8 +229,8 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
                     favoriteBakeryStepsListBeans.add(bakeryStepsListBean1);
                 }
                 long count = dataSnapshot.getChildrenCount();
-                favoriteDetailsCountTextView.setText("Favourite Count (" + Long.toString(count) + ")");
-                favoriteDetailsCountTextView.setContentDescription("Favourite Count (" + Long.toString(count) + ")");
+                favoriteDetailsCountTextView.setText(getResources().getString(R.string.FavouriteCountopenbracket) + Long.toString(count) + getResources().getString(R.string.closebracket));
+                favoriteDetailsCountTextView.setContentDescription(getResources().getString(R.string.FavouriteCountopenbracket) + Long.toString(count) + getResources().getString(R.string.closebracket));
 
                 favoriteRecyclerViewAdapter = new FavoriteRecyclerViewAdapter(mContext, favoriteBakeryStepsListBeans, BakerryRecipieDetailViewActivity.this);
                 favoriteRecyclerViewAdapter.updateFavoriteAdapterList(favoriteBakeryStepsListBeans);
@@ -251,9 +251,9 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity implemen
     @Override
     public void favoriteItemClick(final int position, final ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
         AlertDialog.Builder favoriteDialog = new AlertDialog.Builder(mContext);
-        favoriteDialog.setMessage("Please Choose option");
+        favoriteDialog.setMessage(getResources().getString(R.string.PleaseChooseoption));
         favoriteDialog.setCancelable(true);
-        favoriteDialog.setNegativeButton("View",
+        favoriteDialog.setNegativeButton(getResources().getString(R.string.View),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

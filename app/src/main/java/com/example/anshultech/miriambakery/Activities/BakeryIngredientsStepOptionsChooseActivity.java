@@ -77,9 +77,9 @@ public class BakeryIngredientsStepOptionsChooseActivity extends AppCompatActivit
             mIngredientsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mIngredientsButton.announceForAccessibility("Recipie Ingredients");
+                    mIngredientsButton.announceForAccessibility(getResources().getString(R.string.RecipieIngredients));
                     bundle.putParcelableArrayList(getResources().getString(R.string.ingredient_list), mBakeryIngridentsListBeans);
-                    bundle.putString(getResources().getString(R.string.list_type), "Ingredients");
+                    bundle.putString(getResources().getString(R.string.list_type), getResources().getString(R.string.Ingredients));
                     loadNextActivity(bundle);
                 }
             });
@@ -88,8 +88,8 @@ public class BakeryIngredientsStepOptionsChooseActivity extends AppCompatActivit
                 @Override
                 public void onClick(View v) {
                     bundle.putParcelableArrayList(getResources().getString(R.string.steps_list), mBakeryStepsListBeans);
-                    bundle.putString(getResources().getString(R.string.list_type), "Steps");
-                    mStepButton.announceForAccessibility("Recipie Steps");
+                    bundle.putString(getResources().getString(R.string.list_type), getResources().getString(R.string.Steps));
+                    mStepButton.announceForAccessibility(getResources().getString(R.string.RecipieSteps));
                     loadNextActivity(bundle);
                 }
             });

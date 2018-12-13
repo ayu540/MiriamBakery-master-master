@@ -59,7 +59,7 @@
             android:padding="@dimen/dimen_5dp"
             android:text="Recipe Steps"
             android:textColor="@color/colorWhite"
-            android:textSize="15sp" />
+            android:textSize="@dimen/text_size_15" />
       </LinearLayout>
 
     </LinearLayout>

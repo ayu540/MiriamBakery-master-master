@@ -36,7 +36,7 @@
                     android:background="@color/colorPrimary"
                     android:gravity="center"
                     android:padding="@dimen/dimen_5dp"
-                    android:text="Favourite Count (0)"
+                    tools:text="Favourite Count (0)"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_size_15"
                     android:textStyle="bold" />

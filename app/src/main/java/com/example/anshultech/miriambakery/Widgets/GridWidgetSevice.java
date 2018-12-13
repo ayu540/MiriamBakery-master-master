@@ -81,7 +81,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
             }
         }
         else {
-            views.setTextViewText(R.id.appwidget_text, "Please Logged in App First");
+            views.setTextViewText(R.id.appwidget_text, mContext.getResources().getString(R.string.PleaseLoggedinAppFirst));
         }
         return null;
     }

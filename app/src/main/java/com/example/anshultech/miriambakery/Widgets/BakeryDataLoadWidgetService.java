@@ -119,6 +119,6 @@ public class BakeryDataLoadWidgetService extends IntentService implements Volley
 
     @Override
     public void isNetworkAvailable() {
-        Toast.makeText(mContext, "Network not Available, please check your internet connection", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, mContext.getResources().getString(R.string.NetworknotAvailablepleaseccheckyourinternetconnection), Toast.LENGTH_SHORT).show();
     }
 }
